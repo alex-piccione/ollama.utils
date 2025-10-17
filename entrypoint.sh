@@ -8,10 +8,17 @@ if [ -z "$API_KEY" ]; then
 fi
 
 # 2. Create NGINX config
+#cat > /etc/nginx/sites-available/ollama << EOF
+#map \$http_authorization \$api_key_valid {
+#    default 0;
+#    "Bearer ${API_KEY}" 1;
+#}
+
+## "X-Api-Key"
 cat > /etc/nginx/sites-available/ollama << EOF
-map \$http_authorization \$api_key_valid {
+map \$http_x_api_key \$api_key_valid {
     default 0;
-    "Bearer ${API_KEY}" 1;
+    "${API_KEY}" 1;
 }
 
 server {
